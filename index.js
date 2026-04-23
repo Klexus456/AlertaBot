@@ -16,7 +16,7 @@ const client = new Client({
 });
 
 const CHANNEL_ID = "1497001559673016563";
-const ROLE_ID = "1407508005402181746";
+const ROLE_ID = "1407510732626460702";
 
 // Mensajes normales
 const mensajes = [
