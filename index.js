@@ -15,8 +15,8 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 });
 
-const CHANNEL_ID = "1496666032557785199";
-const ROLE_ID = "1496666722529443920";
+const CHANNEL_ID = "1497001559673016563";
+const ROLE_ID = "1407508005402181746";
 
 client.once("ready", () => {
   console.log("Bot listo");
@@ -35,7 +35,7 @@ client.once("ready", () => {
       const channel = client.channels.cache.get(CHANNEL_ID);
       if (!channel) return;
 
-      channel.send(`<@&${ROLE_ID}> emmm amigo deberias tirar en mudae mmmmm`);
+      channel.send(`<@&${ROLE_ID}> tin tin tin, es la hora de tirar`);
       console.log("Ping enviado");
     }
 
