@@ -1,3 +1,14 @@
+const http = require("http");
+
+const PORT = process.env.PORT || 3000;
+
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Bot activo");
+}).listen(PORT, () => {
+  console.log("Servidor web activo en puerto", PORT);
+});
+
 const { Client, GatewayIntentBits } = require('discord.js');
 
 const client = new Client({
@@ -24,7 +35,7 @@ client.once("ready", () => {
       const channel = client.channels.cache.get(CHANNEL_ID);
       if (!channel) return;
 
-      channel.send(`<@&${ROLE_ID}> Recordatorio automatico`);
+      channel.send(`<@&${ROLE_ID}> emmm amigo deberias tirar en mudae mmmmm`);
       console.log("Ping enviado");
     }
 
@@ -32,3 +43,6 @@ client.once("ready", () => {
 });
 
 client.login(process.env.TOKEN);
+
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
