@@ -78,8 +78,6 @@ client.once("ready", () => {
     const channel = client.channels.cache.get(CHANNEL_ID);
     if (!channel) return;
 
-    const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
-
     //  Detectar últimos rolls
     if (hora % 3 === 1) {
 
