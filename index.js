@@ -84,10 +84,7 @@ client.once("ready", () => {
       const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
       const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
 
-      channel.send({
-        content: `<@&${ROLE_ID}> ${mensaje}`,
-        embeds: [{ image: { url: gifRandom } }]
-      });
+      channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
 
       console.log("Mensaje de últimos rolls enviado");
       return;
@@ -97,10 +94,7 @@ client.once("ready", () => {
     const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
     const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
 
-    channel.send({
-      content: `<@&${ROLE_ID}> ${mensaje}`,
-      embeds: [{ image: { url: gifRandom } }]
-    });
+    channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
 
     console.log("Ping normal enviado");
 
