@@ -25,7 +25,13 @@ const mensajes = [
   "dale gordo tira ya",
   "¡TIRADAS LISTAS! (ruido de pene de fondo)",
   "Agus dejó los fideos para avisar que ya podés tirar",
-  "¡Reset activado! Hora de farmear amor y decepción"
+  "¡Reset activado! Hora de farmear amor y decepción",
+  "Abriste mudae… mudae te abrió a vos",
+  "El RNG te está mirando… y se está tocando",
+  "Tiradas disponibles… Caleb recuerda cuando era feliz",
+  "Se habilitaron las tiradas: Dante oliendo personajes masculinos",
+  "Tiradas activas… demostración en vivo de quién tiene suerte y quién no",
+  "Caleb susurra: “borren mudae”"
 ];
 
 // Mensajes últimos rolls
@@ -34,7 +40,12 @@ const mensajesUltimos = [
   "AHORA O NUNCAAA",
   "última chance gente",
   "Tiradas disponibles… activá el modo toro o llorá",
-  "Si no tirás ahora, te aparece el UwU musculoso"
+  "Si no tirás ahora, te aparece el UwU musculoso",
+  "El RNG se volvió simp de Adán",
+  "TIRADAS LISTAS (una voz susurra “pene…” desde el vacío)",
+  "Tiradas listas… Adán ya está desnudo (de felicidad)",
+  "WEEEY ya están las tiradas, caiganle antes que valga vrg",
+  "El RNG dejó de ser aleatorio… ahora te odia personalmente"
 ];
 
 // GIFs normales
