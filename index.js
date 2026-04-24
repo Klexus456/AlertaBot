@@ -80,9 +80,19 @@ client.once("ready", () => {
   setInterval(() => {
     const now = new Date();
 
-    const hora = now.getHours();
+    // Ajuste a hora Argentina (UTC-3)
+    const hora = (now.getUTCHours() - 3 + 24) % 24;
     const minuto = now.getMinutes();
 
+    //log
+    console.log(`Hora actual: ${hora}:${minuto}`);
+    
+    // Bloque horario: no enviar entre 1 AM y 8 AM
+    if (hora >= 1 && hora < 8) {
+      console.log("Horario bloqueado, no se envía mensaje");
+      return;
+    }
+    
     // Solo en minuto 48
     if (minuto !== 48) return;
 
