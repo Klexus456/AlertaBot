@@ -110,7 +110,7 @@ client.once("ready", () => {
     
     // Bloque horario: no enviar entre 1 AM y 8 AM
     if (hora >= 1 && hora < 8) {
-      console.log("Horario bloqueado, no se envía mensaje");
+      //console.log("Horario bloqueado, no se envía mensaje");
       return;
     }
     
