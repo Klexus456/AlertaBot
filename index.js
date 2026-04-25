@@ -40,11 +40,11 @@ const mensajesUltimos = [
   "AHORA O NUNCAAA",
   "última chance gente",
   "Tiradas disponibles… activá el modo toro o llorá",
-  "Si no tirás ahora, te aparece el UwU musculoso",
-  "El RNG se volvió simp de Adán",
+  "Ultimas tiradas. Si no tirás ahora, te aparece el UwU musculoso",
+  "El RNG se volvió simp de Adán para estas ultimas tiradas",
   "TIRADAS LISTAS (una voz susurra “pene…” desde el vacío)",
   "Tiradas listas… Adán ya está desnudo (de felicidad)",
-  "WEEEY ya están las tiradas, caiganle antes que valga vrg",
+  "WEEEY ya están las ultimadas tiradas, caiganle antes que valga vrg",
   "El RNG dejó de ser aleatorio… ahora te odia personalmente"
 ];
 
@@ -61,7 +61,20 @@ const gifs = [
   "https://tenor.com/eUJuuuy7OlQ.gif",
   "https://tenor.com/qs6vqhvqgaw.gif",
   "https://tenor.com/cQRI6SwyOJW.gif",
-  "https://tenor.com/qKg8xOzFtVP.gif"
+  "https://tenor.com/qKg8xOzFtVP.gif",
+  "https://tenor.com/jezW961b2YV.gif",
+  "https://tenor.com/lIDr92DwI8k.gif",
+  "https://tenor.com/bsHk7bjNE3j.gif",
+  "https://tenor.com/iVsVD7r6JDs.gif",
+  "https://tenor.com/bWzq3.gif",
+  "https://tenor.com/bDCRbvfh7wJ.gif",
+  "https://tenor.com/mZU0Epd7ZN6.gif",
+  "https://tenor.com/hz9eHVC5aSC.gif",
+  "https://tenor.com/bBqEd.gif",
+  "https://tenor.com/gyddNiSddv4.gif",
+  "https://tenor.com/b0aTrXbBDuM.gif",
+  "https://tenor.com/fLfCp5v5FTO.gif",
+  "https://tenor.com/f3M6H8nppBX.gif"
 ];
 
 // GIFs últimos rolls
@@ -71,7 +84,15 @@ const gifsUltimos = [
   "https://klipy.com/gifs/mudae-rolls-11--k01KPYA9TG37XZQRVP7VC0Q44GG",
   "https://klipy.com/gifs/mudae-mudae-rt--k01KPYA1G9S58VZDBY15HN6EDKZ",
   "https://klipy.com/gifs/claim-rolls",
-  "https://tenor.com/q6paZdnDpw7.gif"
+  "https://tenor.com/q6paZdnDpw7.gif",
+  "https://tenor.com/lIDr92DwI8k.gif",
+  "https://tenor.com/no3BrlpgRhA.gif",
+  "https://tenor.com/ACTQHHjX2L.gif",
+  "https://tenor.com/bQ9Id.gif",
+  "https://tenor.com/bNjx7.gif",
+  "https://tenor.com/b8qWi8bGlPC.gif",
+  "https://tenor.com/gKBDOPyDDWn.gif",
+  "https://tenor.com/cOUy3AUGLcE.gif"
 ];
 
 client.once("ready", () => {
@@ -85,7 +106,7 @@ client.once("ready", () => {
     const minuto = now.getMinutes();
 
     //log
-    console.log(`Hora actual: ${hora}:${minuto}`);
+    //console.log(`Hora actual: ${hora}:${minuto}`);
     
     // Bloque horario: no enviar entre 1 AM y 8 AM
     if (hora >= 1 && hora < 8) {
