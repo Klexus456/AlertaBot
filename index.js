@@ -95,52 +95,57 @@ const gifsUltimos = [
   "https://tenor.com/cOUy3AUGLcE.gif"
 ];
 
-client.once("ready", () => {
-  console.log("Bot listo");
+// Lógica principal
+function ejecutarLogica() {
+  const now = new Date();
 
-  setInterval(() => {
-    const now = new Date();
+  //horario arg
+  const hora = (now.getUTCHours() - 3 + 24) % 24;
+  const minuto = now.getMinutes();
 
-    // Ajuste a hora Argentina (UTC-3)
-    const hora = (now.getUTCHours() - 3 + 24) % 24;
-    const minuto = now.getMinutes();
+  //bloqueo horario
+  if (hora >= 1 && hora < 8) return;
 
-    //log
-    //console.log(`Hora actual: ${hora}:${minuto}`);
-    
-    // Bloque horario: no enviar entre 1 AM y 8 AM
-    if (hora >= 1 && hora < 8) {
-      //console.log("Horario bloqueado, no se envía mensaje");
-      return;
-    }
-    
-    // Solo en minuto 48
-    if (minuto !== 48) return;
+  //ajuste minuto
+  if (minuto !== 48) return;
 
-    const channel = client.channels.cache.get(CHANNEL_ID);
-    if (!channel) return;
+  const channel = client.channels.cache.get(CHANNEL_ID);
+  if (!channel) return;
 
-    //  Detectar últimos rolls
-    if (hora % 3 === 1) {
-
-      const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
-      const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
-
-      channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
-
-      console.log("Mensaje de últimos rolls enviado");
-      return;
-    }
-
-    //  Mensaje normal
-    const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
-    const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
+  //ultimas tiradas
+  if (hora % 3 === 1) {
+    const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
+    const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
 
     channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
+    console.log("Mensaje de últimos rolls enviado");
+    return;
+  }
 
-    console.log("Ping normal enviado");
+  const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
+  const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
 
-  }, 60000);
+  channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
+  console.log("Ping normal enviado");
+}
+
+// Scheduler sincronizado
+function iniciarScheduler() {
+  const ahora = new Date();
+
+  const msHastaProximoMinuto =
+    (60 - ahora.getSeconds()) * 1000 - ahora.getMilliseconds();
+
+  setTimeout(() => {
+    ejecutarLogica(); // primera ejecución alineada
+
+    setInterval(ejecutarLogica, 60000);
+  }, msHastaProximoMinuto);
+}
+
+client.once("ready", () => {
+  console.log("Bot listo");
+  iniciarScheduler();
 });
 
 client.login(process.env.TOKEN);
