@@ -18,6 +18,8 @@ const client = new Client({
 const CHANNEL_ID = "1497001559673016563";
 const ROLE_ID = "1407510732626460702";
 
+// ================= MENSAJES =================
+
 // Mensajes normales
 const mensajes = [
   "tin tin tin, es la hora de tirar",
@@ -95,51 +97,89 @@ const gifsUltimos = [
   "https://tenor.com/cOUy3AUGLcE.gif"
 ];
 
-// Lógica principal (ahora async)
+// ================= UTILIDADES =================
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+function timeout(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Timeout")), ms)
+    )
+  ]);
+}
+
+async function enviarConReintento(channel, contenido, intentos = 3) {
+  for (let i = 1; i <= intentos; i++) {
+    try {
+      console.log(`Intento ${i}...`);
+
+      await timeout(channel.send(contenido), 5000);
+
+      console.log("Enviado");
+      return true;
+
+    } catch (err) {
+      console.error(`Error intento ${i}:`, err.message);
+
+      if (i < intentos) {
+        await sleep(2000);
+      }
+    }
+  }
+
+  console.error("Fallaron todos los intentos");
+  return false;
+}
+
+// ================= LÓGICA =================
+
 async function ejecutarLogica() {
   const now = new Date();
 
   const hora = (now.getUTCHours() - 3 + 24) % 24;
   const minuto = now.getMinutes();
 
-  console.log(`Intentando ejecutar en ${hora}:${minuto}`);
+  console.log(`tiempo actual: ${hora}:${minuto}`);
 
   if (hora >= 1 && hora < 8) return;
   if (minuto !== 48) return;
 
-  const channel = client.channels.cache.get(CHANNEL_ID);
-  console.log("Canal encontrado:", !!channel);
+  const channel = await client.channels.fetch(CHANNEL_ID).catch(() => null);
+
+  console.log("Canal:", !!channel);
   if (!channel) return;
 
-  try {
-    // Últimas tiradas
-    if (hora % 3 === 1) {
-      const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
-      const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
+  let mensaje, gif;
 
-      await channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
-      console.log("Mensaje de últimos rolls enviado");
-      return;
-    }
+  if (hora % 3 === 1) {
+    mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
+    gif = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
+  } else {
+    mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
+    gif = gifs[Math.floor(Math.random() * gifs.length)];
+  }
 
-    // Normal
-    const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
-    const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
+  const enviado = await enviarConReintento(
+    channel,
+    `<@&${ROLE_ID}> ${mensaje}\n${gif}`
+  );
 
-    await channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
-    console.log("Ping normal enviado");
-
-  } catch (err) {
-    console.error("Error al enviar mensaje:", err);
+  if (!enviado) {
+    console.log("No se pudo enviar el mensaje");
   }
 }
 
-// Scheduler sin drift
+// ================= SCHEDULER =================
+
 function iniciarScheduler() {
-  programarSiguiente();
+  programar();
 }
 
-function programarSiguiente() {
+function programar() {
   const ahora = new Date();
 
   const siguiente = new Date(ahora);
@@ -150,17 +190,38 @@ function programarSiguiente() {
   const delay = siguiente - ahora;
 
   setTimeout(async () => {
-    await ejecutarLogica();
-    programarSiguiente();
+    try {
+      await ejecutarLogica();
+    } catch (err) {
+      console.error("Error en ejecución:", err);
+    }
+
+    programar();
   }, delay);
 }
+
+// ================= EVENTOS =================
 
 client.once("ready", () => {
   console.log("Bot listo");
   iniciarScheduler();
 });
 
+// reconexión automática visible
+client.on("error", console.error);
+client.on("shardError", console.error);
+client.on("disconnect", () => console.log("Bot desconectado"));
+client.on("reconnecting", () => console.log("Reconectando..."));
+
+// ================= LOGIN =================
+
 client.login(process.env.TOKEN);
 
-process.on("uncaughtException", console.error);
-process.on("unhandledRejection", console.error);
+// evitar crashes silenciosos
+process.on("uncaughtException", err => {
+  console.error("uncaughtException:", err);
+});
+
+process.on("unhandledRejection", err => {
+  console.error("unhandledRejection:", err);
+});
