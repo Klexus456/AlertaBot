@@ -95,52 +95,64 @@ const gifsUltimos = [
   "https://tenor.com/cOUy3AUGLcE.gif"
 ];
 
-// Lógica principal
-function ejecutarLogica() {
+// Lógica principal (ahora async)
+async function ejecutarLogica() {
   const now = new Date();
 
-  //horario arg
   const hora = (now.getUTCHours() - 3 + 24) % 24;
   const minuto = now.getMinutes();
 
-  //bloqueo horario
-  if (hora >= 1 && hora < 8) return;
+  console.log(`Intentando ejecutar en ${hora}:${minuto}`);
 
-  //ajuste minuto
+  if (hora >= 1 && hora < 8) return;
   if (minuto !== 48) return;
 
   const channel = client.channels.cache.get(CHANNEL_ID);
+  console.log("Canal encontrado:", !!channel);
   if (!channel) return;
 
-  //ultimas tiradas
-  if (hora % 3 === 1) {
-    const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
-    const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
+  try {
+    // Últimas tiradas
+    if (hora % 3 === 1) {
+      const mensaje = mensajesUltimos[Math.floor(Math.random() * mensajesUltimos.length)];
+      const gifRandom = gifsUltimos[Math.floor(Math.random() * gifsUltimos.length)];
 
-    channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
-    console.log("Mensaje de últimos rolls enviado");
-    return;
+      await channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
+      console.log("Mensaje de últimos rolls enviado");
+      return;
+    }
+
+    // Normal
+    const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
+    const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
+
+    await channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
+    console.log("Ping normal enviado");
+
+  } catch (err) {
+    console.error("Error al enviar mensaje:", err);
   }
-
-  const mensaje = mensajes[Math.floor(Math.random() * mensajes.length)];
-  const gifRandom = gifs[Math.floor(Math.random() * gifs.length)];
-
-  channel.send(`<@&${ROLE_ID}> ${mensaje}\n${gifRandom}`);
-  console.log("Ping normal enviado");
 }
 
-// Scheduler sincronizado
+// Scheduler sin drift
 function iniciarScheduler() {
+  programarSiguiente();
+}
+
+function programarSiguiente() {
   const ahora = new Date();
 
-  const msHastaProximoMinuto =
-    (60 - ahora.getSeconds()) * 1000 - ahora.getMilliseconds();
+  const siguiente = new Date(ahora);
+  siguiente.setSeconds(0);
+  siguiente.setMilliseconds(0);
+  siguiente.setMinutes(ahora.getMinutes() + 1);
 
-  setTimeout(() => {
-    ejecutarLogica(); // primera ejecución alineada
+  const delay = siguiente - ahora;
 
-    setInterval(ejecutarLogica, 60000);
-  }, msHastaProximoMinuto);
+  setTimeout(async () => {
+    await ejecutarLogica();
+    programarSiguiente();
+  }, delay);
 }
 
 client.once("ready", () => {
