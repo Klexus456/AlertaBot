@@ -97,37 +97,26 @@ const gifsUltimos = [
   "https://tenor.com/cOUy3AUGLcE.gif"
 ];
 
-// ================= UTILIDADES =================
+// ================= UTIL =================
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-function timeout(promise, ms) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error("Timeout")), ms)
-    )
-  ]);
-}
-
-async function enviarConReintento(channel, contenido, intentos = 3) {
-  for (let i = 1; i <= intentos; i++) {
+async function enviarConReintento(channel, contenido) {
+  for (let i = 1; i <= 3; i++) {
     try {
-      console.log(`Intento ${i}...`);
+      console.log(`Intento ${i} de envío`);
 
-      await timeout(channel.send(contenido), 5000);
-      
-      console.log("Enviado");
+      await channel.send(contenido);
+
+      console.log("Mensaje enviado correctamente");
       return true;
 
     } catch (err) {
-      console.error(`Error intento ${i}:`, err.message);
+      console.error("Error enviando:", err.message);
 
-      if (i < intentos) {
-        await sleep(2000);
-      }
+      await sleep(3000);
     }
   }
 
@@ -138,19 +127,30 @@ async function enviarConReintento(channel, contenido, intentos = 3) {
 // ================= LÓGICA =================
 
 async function ejecutarLogica() {
+  if (!client.isReady()) {
+    console.log("Bot no listo todavía");
+    return;
+  }
+
   const now = new Date();
 
   const hora = (now.getUTCHours() - 3 + 24) % 24;
   const minuto = now.getMinutes();
 
-  console.log(`tiempo actual: ${hora}:${minuto}`);
-  
+  console.log(`Hora actual: ${hora}:${minuto}`);
+
   if (hora >= 1 && hora < 8) return;
   if (minuto !== 48) return;
 
-  const channel = await client.channels.fetch(CHANNEL_ID).catch(() => null);
+  let channel;
 
-  console.log("Canal:", !!channel);
+  try {
+    channel = await client.channels.fetch(CHANNEL_ID);
+  } catch {
+    console.log("No se pudo obtener el canal");
+    return;
+  }
+
   if (!channel) return;
 
   let mensaje, gif;
@@ -163,65 +163,35 @@ async function ejecutarLogica() {
     gif = gifs[Math.floor(Math.random() * gifs.length)];
   }
 
-  const enviado = await enviarConReintento(
+  await enviarConReintento(
     channel,
     `<@&${ROLE_ID}> ${mensaje}\n${gif}`
   );
-
-  if (!enviado) {
-    console.log("No se pudo enviar el mensaje");
-  }
 }
 
 // ================= SCHEDULER =================
 
 function iniciarScheduler() {
-  programar();
-}
-
-function programar() {
-  const ahora = new Date();
-
-  const siguiente = new Date(ahora);
-  siguiente.setSeconds(0);
-  siguiente.setMilliseconds(0);
-  siguiente.setMinutes(ahora.getMinutes() + 1);
-
-  const delay = siguiente - ahora;
-
-  setTimeout(async () => {
-    try {
-      await ejecutarLogica();
-    } catch (err) {
-      console.error("Error en ejecución:", err);
-    }
-
-    programar();
-  }, delay);
+  setInterval(ejecutarLogica, 60000);
 }
 
 // ================= EVENTOS =================
 
 client.once("ready", () => {
-  console.log("Bot listo");
+  console.log("Bot conectado como", client.user.tag);
   iniciarScheduler();
 });
 
-// reconexión automática visible
+client.on("disconnect", () => console.log("Desconectado"));
+client.on("reconnecting", () => console.log("Reconectando"));
 client.on("error", console.error);
-client.on("shardError", console.error);
-client.on("disconnect", () => console.log("Bot desconectado"));
-client.on("reconnecting", () => console.log("Reconectando..."));
 
 // ================= LOGIN =================
 
-client.login(process.env.TOKEN);
+client.login(process.env.TOKEN).catch(err => {
+  console.error("Error al loguear:", err);
+});
 
 // evitar crashes silenciosos
-process.on("uncaughtException", err => {
-  console.error("uncaughtException:", err);
-});
-
-process.on("unhandledRejection", err => {
-  console.error("unhandledRejection:", err);
-});
+process.on("uncaughtException", console.error);
+process.on("unhandledRejection", console.error);
