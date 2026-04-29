@@ -117,7 +117,7 @@ async function enviarConReintento(channel, contenido, intentos = 3) {
     try {
       console.log(`Intento ${i}...`);
 
-      await timeout(channel.send(contenido), 15000);
+      await timeout(channel.send(contenido), 5000);
       
       console.log("Enviado");
       return true;
@@ -144,7 +144,6 @@ async function ejecutarLogica() {
   const minuto = now.getMinutes();
 
   console.log(`tiempo actual: ${hora}:${minuto}`);
-  console.log("Ping Discord:", client.ws.ping);
   
   if (hora >= 1 && hora < 8) return;
   if (minuto !== 48) return;
