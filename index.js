@@ -172,7 +172,17 @@ async function ejecutarLogica() {
 // ================= SCHEDULER =================
 
 function iniciarScheduler() {
-  setInterval(ejecutarLogica, 60000);
+  function loop() {
+    ejecutarLogica();
+
+    const now = new Date();
+    const msHastaProximoMinuto =
+      (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
+
+    setTimeout(loop, msHastaProximoMinuto);
+  }
+
+  loop();
 }
 
 // ================= EVENTOS =================
