@@ -76,7 +76,20 @@ const gifs = [
   "https://tenor.com/gyddNiSddv4.gif",
   "https://tenor.com/b0aTrXbBDuM.gif",
   "https://tenor.com/fLfCp5v5FTO.gif",
-  "https://tenor.com/f3M6H8nppBX.gif"
+  "https://tenor.com/f3M6H8nppBX.gif",
+  "https://tenor.com/m4hEaEHawFk.gif",
+  "https://tenor.com/cDj4le6YXcq.gif",
+  "https://tenor.com/qjhUlXSjhu9.gif",
+  "https://tenor.com/ejCBgO7Cyne.gif",
+  "https://tenor.com/bWKZd.gif",
+  "https://tenor.com/mq09XKU574F.gif",
+  "https://tenor.com/bKzEh.gif",
+  "https://tenor.com/iHMBG3ItOY5.gif",
+  "https://tenor.com/iS34HHzX2pN.gif",
+  "https://tenor.com/tUmh05ZE6Ud.gif",
+  "https://tenor.com/cpPFTSEGLVP.gif",
+  "https://tenor.com/mQl7Nxub7bB.gif"
+
 ];
 
 // GIFs últimos rolls
@@ -94,7 +107,14 @@ const gifsUltimos = [
   "https://tenor.com/bNjx7.gif",
   "https://tenor.com/b8qWi8bGlPC.gif",
   "https://tenor.com/gKBDOPyDDWn.gif",
-  "https://tenor.com/cOUy3AUGLcE.gif"
+  "https://tenor.com/cOUy3AUGLcE.gif",
+  "https://tenor.com/etfYKs0hcla.gif",
+  "https://tenor.com/vaUzMfTcov5.gif",
+  "https://tenor.com/qTNRUIepjqa.gif",
+  "https://tenor.com/bLt2J.gif",
+  "https://tenor.com/bOd1h.gif",
+  "https://tenor.com/ehSfZiKWNaS.gif",
+  "https://tenor.com/cIS4Ig0QYZo.gif"
 ];
 
 // ================= UTIL =================
