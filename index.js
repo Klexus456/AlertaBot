@@ -12,12 +12,16 @@ http.createServer((req, res) => {
 const { Client, GatewayIntentBits } = require('discord.js');
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent
+  ]
 });
 
 const CHANNEL_ID = "1497001559673016563";
 const ROLE_ID = "1407510732626460702";
-
+const REQUIEM_CHANNEL_ID = "1407503772564983862";
 // ================= MENSAJES =================
 
 // Mensajes normales
@@ -117,7 +121,52 @@ const gifsUltimos = [
   "https://tenor.com/cIS4Ig0QYZo.gif"
 ];
 
+// REQUIEM
+
+const mensajesRequiem = [
+  "BITESTHEDUST REQUIEM YA ESTÁ LISTO",
+  "15 días esperando este momento",
+  "KILLER QUEEN DAISAN NO BAKUDAN",
+  "Hay que pagar el aguinaldo"
+];
+
+const gifsRequiem = [
+"https://tenor.com/es-419/view/dio-brando-dio-passinho-all-roads-jjba-gif-10683421054147884439",
+"https://tenor.com/es-419/view/jojo-killer-queen-bites-the-dust-specific-tag-lol-find-me-lmao-gif-10980487883815443673",
+"https://tenor.com/es-419/view/bites-the-dust-killa-queen-jojos-bizarre-adventures-jjba-anime-gif-17748630",
+"https://tenor.com/es-419/view/jojo's-bizarre-adventure-killer-queen-yoshikage-kira-kira-yoshikage-jojo-gif-96687283340349969"
+];
+
 // ================= UTIL =================
+
+const fs = require("fs");
+
+const ARCHIVO_REQUIEM = "./requiem.json";
+
+function cargarRequiem() {
+  try {
+    return JSON.parse(
+    fs.readFileSync(
+    ARCHIVO_REQUIEM,
+    "utf8"
+    ));
+  }
+  
+  catch {
+    return {
+    ultimaEjecucion: null
+    };
+  }
+}
+
+function guardarRequiem(fecha) {
+  fs.writeFileSync(
+  ARCHIVO_REQUIEM,
+  JSON.stringify({
+  ultimaEjecucion: fecha
+  }, null, 2)
+  );
+}
 
 function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
@@ -189,11 +238,47 @@ async function ejecutarLogica() {
   );
 }
 
+async function ejecutarAlertaRequiem() {
+  if (!client.isReady())
+  return;
+  
+  const datos = cargarRequiem();
+  
+  if (!datos.ultimaEjecucion)
+  return;
+  
+  const ahora = new Date();
+  const ultima = new Date(datos.ultimaEjecucion);
+  const dias =Math.floor((ahora -ultima)/86400000);
+  
+  if (dias !== 15)
+  return;
+  
+  const hora = (ahora.getUTCHours()- 3 + 24) % 24;
+  
+  if (hora !== 21 || ahora.getMinutes() !== 0)
+  return;
+  
+  const channel = await client.channels.fetch(REQUIEM_CHANNEL_ID);
+  
+  if (!channel)
+  return;
+  
+  const mensaje = mensajesRequiem[Math.floor(Math.random()*mensajesRequiem.length)];
+  const gif = gifsRequiem[Math.floor(Math.random()*gifsRequiem.length)];
+  
+  await enviarConReintento(
+  channel,
+  `<@&${ROLE_ID}> ${mensaje} \n${gif}`
+  );
+}
+
 // ================= SCHEDULER =================
 
 function iniciarScheduler() {
   function loop() {
     ejecutarLogica();
+    ejecutarAlertaRequiem();
 
     const now = new Date();
     const msHastaProximoMinuto =
@@ -215,6 +300,31 @@ client.once("ready", () => {
 client.on("disconnect", () => console.log("Desconectado"));
 client.on("reconnecting", () => console.log("Reconectando"));
 client.on("error", console.error);
+//Detectar que alguien escriba $bitesthedust
+client.on("messageCreate", async message => {
+  if (message.author.bot)
+  return;
+  
+  const texto =
+  message.content
+  .toLowerCase()
+  .trim();
+  
+  if (
+    texto.includes(
+    "bitesthedust requiem"
+    )
+  ) 
+  {
+    guardarRequiem(
+    new Date().toISOString()
+    );
+    
+    console.log(
+    "Requiem registrado"
+    );
+  }
+});
 
 // ================= LOGIN =================
 
