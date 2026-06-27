@@ -137,39 +137,113 @@ const gifsRequiem = [
 "https://tenor.com/es-419/view/jojo's-bizarre-adventure-killer-queen-yoshikage-kira-kira-yoshikage-jojo-gif-96687283340349969"
 ];
 
-// ================= UTIL =================
+// ================= UTILIDADES =================
 
-const fs = require("fs");
+const OWNER = "Klexus456";
+const REPO = "AlertaBot";
+const FILE = "requiem.json";
+const BRANCH = "main";
 
-const path = require("path");
-const ARCHIVO_REQUIEM =
-path.join(__dirname, "requiem.json");
-
-function cargarRequiem() {
+async function cargarRequiem() {
   try {
+    const res = await fetch(
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`,
+      {
+        headers: 
+        {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+        }
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+    const data = await res.json();
+
     return JSON.parse(
-    fs.readFileSync(
-    ARCHIVO_REQUIEM,
-    "utf8"
-    ));
-  }
-  
-  catch {
+      Buffer
+        .from(data.content, "base64")
+        .toString("utf8")
+    );
+
+  } catch (err) {
+    console.error(
+      "Error leyendo requiem:",
+      err
+    );
+
     return {
-    ultimaEjecucion: null
+      ultimaEjecucion: null
     };
   }
 }
 
-function guardarRequiem(fecha) {
-  console.log("Guardando en:", ARCHIVO_REQUIEM);
-  
-  fs.writeFileSync(
-    ARCHIVO_REQUIEM,
-    JSON.stringify({
-    ultimaEjecucion: fecha
-    }, null, 2)
-  );
+async function guardarRequiem(fecha) {
+  try {
+    const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
+
+    const actual =
+      await fetch(
+        url,
+        {
+          headers: 
+          { 
+            Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+          }
+        }
+      );
+
+    if (!actual.ok) {
+      const error = await actual.text();
+      throw new Error(`Error leyendo archivo: ${error}`);
+    }
+    
+    const archivo = await actual.json();
+
+    const contenido =
+      Buffer
+        .from(
+          JSON.stringify({
+            ultimaEjecucion: fecha
+          }, null, 2)
+        )
+        .toString("base64");
+
+    const respuesta = await fetch(
+      url,
+      {
+        method: "PUT",
+
+        headers: {
+          Authorization:
+            `Bearer ${process.env.GITHUB_TOKEN}`,
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+          message:
+            "Actualizar requiem",
+          content:
+            contenido,
+          sha:
+            archivo.sha,
+          branch:
+            BRANCH
+        })
+      }
+    );
+
+    if (!respuesta.ok) {
+      const error = await respuesta.text();
+      throw new Error(error);
+    }
+    
+    console.log("Requiem guardado en GitHub");
+
+  } catch (err) {
+    console.error("Error guardando:", err);
+  }
 }
 
 function sleep(ms) {
@@ -246,7 +320,7 @@ async function ejecutarAlertaRequiem() {
   if (!client.isReady())
   return;
   
-  const datos = cargarRequiem();
+  const datos = await cargarRequiem();
   
   if (!datos.ultimaEjecucion)
   return;
@@ -314,23 +388,20 @@ client.on("messageCreate", async message => {
   .toLowerCase()
   .trim();
   
-  if (
-    texto.includes(
-    "bitesthedust requiem"
-    )
-  ) 
+  if (texto.includes("bitesthedust requiem")) 
   {
-    guardarRequiem(
-    new Date().toISOString()
+    await guardarRequiem(
+      new Date().toISOString()
     );
-    
-    console.log(
-    "Requiem registrado"
-    );
+    console.log("Requiem registrado");
   }
 });
 
 // ================= LOGIN =================
+if (!process.env.GITHUB_TOKEN) {
+  console.error("Falta GITHUB_TOKEN");
+  process.exit(1);
+}
 
 client.login(process.env.TOKEN).catch(err => {
   console.error("Error al loguear:", err);
