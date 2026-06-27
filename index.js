@@ -162,11 +162,13 @@ function cargarRequiem() {
 }
 
 function guardarRequiem(fecha) {
+  console.log("Guardando en:", ARCHIVO_REQUIEM);
+  
   fs.writeFileSync(
-  ARCHIVO_REQUIEM,
-  JSON.stringify({
-  ultimaEjecucion: fecha
-  }, null, 2)
+    ARCHIVO_REQUIEM,
+    JSON.stringify({
+    ultimaEjecucion: fecha
+    }, null, 2)
   );
 }
 
