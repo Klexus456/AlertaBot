@@ -141,7 +141,9 @@ const gifsRequiem = [
 
 const fs = require("fs");
 
-const ARCHIVO_REQUIEM = "./requiem.json";
+const path = require("path");
+const ARCHIVO_REQUIEM =
+path.join(__dirname, "requiem.json");
 
 function cargarRequiem() {
   try {
