@@ -2,6 +2,8 @@ const http = require("http");
 
 const PORT = process.env.PORT || 3000;
 
+const {registrarWish,obtenerRanking} = require("./wishes");
+
 http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": "text/plain" });
   res.end("Bot activo");
@@ -378,23 +380,56 @@ client.once("ready", () => {
 client.on("disconnect", () => console.log("Desconectado"));
 client.on("reconnecting", () => console.log("Reconectando"));
 client.on("error", console.error);
-//Detectar que alguien escriba $bitesthedust
-client.on("messageCreate", async message => {
+
+
+// ============== DETECTOR DE MENSAJES ===============
+
+client.on("messageCreate", async message => 
+{
+  //Detectar "bitesthedust requiem"
   if (message.author.bot)
   return;
   
-  const texto =
-  message.content
-  .toLowerCase()
-  .trim();
+  const texto = message.content.toLowerCase().trim();
   
   if (texto.includes("bitesthedust requiem")) 
   {
-    await guardarRequiem(
-      new Date().toISOString()
-    );
+    await guardarRequiem(new Date().toISOString());
     console.log("Requiem registrado");
   }
+
+  //Detectar wishes
+  if (message.author.bot && message.content.includes("Deseado por")) 
+  { 
+    for (const usuario of message.mentions.users.values()) 
+    {
+      await registrarWish(usuario.id);
+      console.log(`Wish registrado para ${usuario.id}`);
+    }
+  }
+  // ==== COMANDO WISHES ====
+  if (message.content === "!wishes") 
+  {
+    const ranking = await obtenerRanking(client);
+    
+    if (ranking.length === 0) 
+    {
+      return message.reply("No hay wishes registradas.");
+    }
+    
+    let texto ="Ranking de wishes toristicos\n\n";
+    
+    ranking.forEach((u, i) => {
+      const fecha = new Date(u.ultimaWish).toLocaleString("es-AR");
+      
+      texto += `${i + 1}. ${u.nombre}\n`;
+      texto += `Wishes: ${u.cantidad}\n`;
+      texto += `Último: ${fecha}\n\n`;
+    });
+    
+    message.reply(texto);
+  }
+  
 });
 
 // ================= LOGIN =================
