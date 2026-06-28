@@ -414,7 +414,7 @@ client.on("messageCreate", async message =>
     
     if (ranking.length === 0) 
     {
-      return message.reply("No hay wishes registradas.");
+      return message.reply("No hay wishes registrados.");
     }
     
     let texto ="Ranking de wishes toristicos\n\n";
