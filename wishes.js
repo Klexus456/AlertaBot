@@ -72,7 +72,7 @@ async function guardarWishes(datos) {
 
 // ================= REGISTRAR =================
 
-async function registrarWish(usuarioId) 
+async function registrarWish(usuarioId, fecha) 
 {
 
   const datos = await cargarWishes();
@@ -81,7 +81,7 @@ async function registrarWish(usuarioId)
     datos.usuarios[usuarioId] = {cantidad: 0, ultimaWish: null};
   }
   datos.usuarios[usuarioId].cantidad++;
-  datos.usuarios[usuarioId].ultimaWish = new Date().toISOString();
+  datos.usuarios[usuarioId].ultimaWish = fecha;
 
   await guardarWishes(datos);
 
