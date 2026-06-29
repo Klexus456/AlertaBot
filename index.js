@@ -389,17 +389,17 @@ client.on("messageCreate", async message =>
   const texto = message.content.toLowerCase().trim();
 
   // Detectar wishes (mensajes de Mudae)
-  // Detectar wishes
   if (message.author.bot && texto.includes("deseado por"))
   {
     console.log("WISH DETECTADO");
     console.log("Contenido:", message.content);
-    console.log("Mentions:", message.mentions.users.size);
+    const ids = [...message.content.matchAll(/<@!?(\d+)>/g)].map(m => m[1]);
+    console.log("IDs encontrados:", ids);
   
-    for (const usuario of message.mentions.users.values())
+    for (const id of ids)
     {
-      await registrarWish(usuario.id);
-      console.log(`Wish registrado para ${usuario.id}`);
+      await registrarWish(id);
+      console.log(`Wish registrado para ${id}`);
     }
   
     return;
