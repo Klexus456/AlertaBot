@@ -386,50 +386,53 @@ client.on("error", console.error);
 
 client.on("messageCreate", async message => 
 {
-  //Detectar "bitesthedust requiem"
+  const texto = message.content.toLowerCase().trim();
+
+  // Detectar wishes (mensajes de Mudae)
+  if (message.author.bot && texto.includes("deseado por")) 
+  {
+    for (const usuario of message.mentions.users.values()) 
+    {
+      await registrarWish(usuario.id);
+      console.log(`Wish registrado para ${usuario.id}`);
+    }
+
+    return;
+  }
+
+  // Ignorar otros bots
   if (message.author.bot)
   return;
-  
-  const texto = message.content.toLowerCase().trim();
-  
+
+  // Detectar "bitesthedust requiem"
   if (texto.includes("bitesthedust requiem")) 
   {
     await guardarRequiem(new Date().toISOString());
     console.log("Requiem registrado");
   }
 
-  //Detectar wishes
-  if (message.author.bot && message.content.includes("Deseado por")) 
-  { 
-    for (const usuario of message.mentions.users.values()) 
-    {
-      await registrarWish(usuario.id);
-      console.log(`Wish registrado para ${usuario.id}`);
-    }
-  }
   // ==== COMANDO WISHES ====
-  if (message.content === "!wishes") 
+  if (texto === "!wishes") 
   {
     const ranking = await obtenerRanking(client);
-    
+
     if (ranking.length === 0) 
     {
       return message.reply("No hay wishes registrados.");
     }
-    
-    let texto ="Ranking de wishes toristicos\n\n";
-    
-    ranking.forEach((u, i) => {
+
+    let respuesta = "Ranking de wishes toristicos\n\n";
+
+    ranking.forEach((u, i) => 
+    {
       const fecha = new Date(u.ultimaWish).toLocaleString("es-AR");
-      
-      texto += `${i + 1}. ${u.nombre}\n`;
-      texto += `Wishes: ${u.cantidad}\n`;
-      texto += `Último: ${fecha}\n\n`;
+      respuesta += `${i + 1}. ${u.nombre}\n`;
+      respuesta += `Wishes: ${u.cantidad}\n`;
+      respuesta += `Último wish: ${fecha}\n\n`;
     });
-    
-    message.reply(texto);
+
+    await message.reply(respuesta);
   }
-  
 });
 
 // ================= LOGIN =================
