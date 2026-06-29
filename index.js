@@ -398,7 +398,7 @@ client.on("messageCreate", async message =>
   
     for (const id of ids)
     {
-      await registrarWish(id);
+      await registrarWish(id, message.createdAt.toISOString());
       console.log(`Wish registrado para ${id}`);
     }
   
