@@ -279,15 +279,7 @@ async function enviarConReintento(channel, mensaje, gif) {
 
        await channel.send({
         content: mensaje,
-        embeds: 
-        [
-          {
-            image: 
-            {
-              url: gif
-            }
-          }
-        ]
+        files: [gif]
       });
 
       console.log("Mensaje enviado correctamente");
