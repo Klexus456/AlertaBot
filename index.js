@@ -39,7 +39,8 @@ const mensajes = [
   "Tiradas disponibles… Caleb recuerda cuando era feliz",
   "Se habilitaron las tiradas: Dante oliendo personajes masculinos",
   "Tiradas activas… demostración en vivo de quién tiene suerte y quién no",
-  "Caleb susurra: “borren mudae”"
+  "Caleb susurra: “borren mudae”",
+  "Se viene la vigesima llave de kurapika"
 ];
 
 // Mensajes últimos rolls
@@ -56,75 +57,7 @@ const mensajesUltimos = [
   "El RNG dejó de ser aleatorio… ahora te odia personalmente"
 ];
 
-// GIFs normales
-const gifs = [
-  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/youshouldrollnow.png",
-  "https://klipy.com/gifs/mudae-mudae-bot-7--k01KPYA1G9S58VZDBY15HN6EDKZ",
-  "https://tenor.com/view/koishi-komeiji-hata-no-kokoro-mudae-rolls-rolls-reset-gif-5709035038960353291",
-  "https://klipy.com/gifs/mudae-mudae-rolls-4--k01KPY9Y07N4QWKDPTAW15G46FY",
-  "https://klipy.com/gifs/indiehome-mudae--k01KPY9Y07N4QWKDPTAW15G46FY",
-  "https://klipy.com/gifs/mudae-mudae-discord--k01KPYA9TG37XZQRVP7VC0Q44GG",
-  "https://klipy.com/gifs/smt-shin-megami-tensei-12",
-  "https://klipy.com/gifs/no-kakera-mudae",
-  "https://tenor.com/eUJuuuy7OlQ.gif",
-  "https://tenor.com/qs6vqhvqgaw.gif",
-  "https://tenor.com/cQRI6SwyOJW.gif",
-  "https://tenor.com/qKg8xOzFtVP.gif",
-  "https://tenor.com/jezW961b2YV.gif",
-  "https://tenor.com/lIDr92DwI8k.gif",
-  "https://tenor.com/bsHk7bjNE3j.gif",
-  "https://tenor.com/iVsVD7r6JDs.gif",
-  "https://tenor.com/bWzq3.gif",
-  "https://tenor.com/bDCRbvfh7wJ.gif",
-  "https://tenor.com/mZU0Epd7ZN6.gif",
-  "https://tenor.com/hz9eHVC5aSC.gif",
-  "https://tenor.com/bBqEd.gif",
-  "https://tenor.com/gyddNiSddv4.gif",
-  "https://tenor.com/b0aTrXbBDuM.gif",
-  "https://tenor.com/fLfCp5v5FTO.gif",
-  "https://tenor.com/f3M6H8nppBX.gif",
-  "https://tenor.com/m4hEaEHawFk.gif",
-  "https://tenor.com/cDj4le6YXcq.gif",
-  "https://tenor.com/qjhUlXSjhu9.gif",
-  "https://tenor.com/ejCBgO7Cyne.gif",
-  "https://tenor.com/bWKZd.gif",
-  "https://tenor.com/mq09XKU574F.gif",
-  "https://tenor.com/bKzEh.gif",
-  "https://tenor.com/iHMBG3ItOY5.gif",
-  "https://tenor.com/iS34HHzX2pN.gif",
-  "https://tenor.com/tUmh05ZE6Ud.gif",
-  "https://tenor.com/cpPFTSEGLVP.gif",
-  "https://tenor.com/mQl7Nxub7bB.gif"
-
-];
-
-// GIFs últimos rolls
-const gifsUltimos = [
-  "https://klipy.com/gifs/poopeaters-mudae-claim-reset--k01KPY8NFHMNA4FT517J561VGR7",
-  "https://tenor.com/view/rene-barblesnarg-mudae-kakera-rolls-reset-gif-9698949212354405690",
-  "https://klipy.com/gifs/mudae-rolls-11--k01KPYA9TG37XZQRVP7VC0Q44GG",
-  "https://klipy.com/gifs/mudae-mudae-rt--k01KPYA1G9S58VZDBY15HN6EDKZ",
-  "https://klipy.com/gifs/claim-rolls",
-  "https://tenor.com/q6paZdnDpw7.gif",
-  "https://tenor.com/lIDr92DwI8k.gif",
-  "https://tenor.com/no3BrlpgRhA.gif",
-  "https://tenor.com/ACTQHHjX2L.gif",
-  "https://tenor.com/bQ9Id.gif",
-  "https://tenor.com/bNjx7.gif",
-  "https://tenor.com/b8qWi8bGlPC.gif",
-  "https://tenor.com/gKBDOPyDDWn.gif",
-  "https://tenor.com/cOUy3AUGLcE.gif",
-  "https://tenor.com/etfYKs0hcla.gif",
-  "https://tenor.com/vaUzMfTcov5.gif",
-  "https://tenor.com/qTNRUIepjqa.gif",
-  "https://tenor.com/bLt2J.gif",
-  "https://tenor.com/bOd1h.gif",
-  "https://tenor.com/ehSfZiKWNaS.gif",
-  "https://tenor.com/cIS4Ig0QYZo.gif"
-];
-
-// REQUIEM
-
+// Mensajes requiem
 const mensajesRequiem = [
   "BITESTHEDUST REQUIEM YA ESTÁ LISTO",
   "15 días esperando este momento",
@@ -132,11 +65,98 @@ const mensajesRequiem = [
   "Hay que pagar el aguinaldo"
 ];
 
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+///////////////
+
+// GIFs normales
+const gifs = [
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/youshouldrollnow.png",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-meme.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-bot%20(1).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae%20(1).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-kakera.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-dk.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-claim.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-vinland-saga.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-hg.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-bot-micronesia.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-roll.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/rena-ryuugu-higurashi.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-negotiations-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-bot.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-rolls%20(1).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-pokemon.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-superman.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/you-have-0-rolls-left-next-rolls-reset-in-6-min-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudaebot.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/frieren-sousou-no-frieren.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-tu-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-breaking-bad.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-discord-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/laerfu-ermesloft.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/rene-barblesnarg.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-rolls.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-anime.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/broly-mduae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-rolls.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudaetime.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/U1IzO79U.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/VttOqPmi.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/lUvm7mCW.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mzzO7X68.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/KWYlL2X2KgaCvVqJ64.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/koishi-komeiji-hata-no-kokoro.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/1dsSfphQSPM1.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/i-play.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/sonic-mudae-mudae-sonic.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-bot-jumpscare-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-rolls%20(1).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-rolls%20(2).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-mudae-h.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/calcificados-mudae-any-rollers.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/squid-games-seong-gi-hun.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Normales/mudae-nicobluess.gif"
+];
+
+// GIFs últimos rolls
+const gifsUltimos = [
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-bot-god-rolls.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-mudae-discord-bot.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-sonic-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/daily-rolls.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-claim%20(1).gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/genos-opm.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/milkyguts-terrence-luvs-you.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-croix-ar-tonelico.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/avengers-assemble-mudae-rollers-assemble.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-rush.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/jojo-joseph.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/claim-rolls.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-i-have-no-mouth-and-i-must-scream.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/rolls-mudae.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/mudae-o'-clock.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/jojo-diamond-is-unbreakable.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/gojo-jjk.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/88qulA9B.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/42l5TvS8SOTu.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/zLR339nSceQqrSAjFt8O.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/rene-barblesnarg.gif",
+  "https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Ultimos/fTcqxxZPXIMynPYJ45.gif"
+];
+
+// Gifs requiem
 const gifsRequiem = [
-"https://tenor.com/es-419/view/dio-brando-dio-passinho-all-roads-jjba-gif-10683421054147884439",
-"https://tenor.com/es-419/view/jojo-killer-queen-bites-the-dust-specific-tag-lol-find-me-lmao-gif-10980487883815443673",
-"https://tenor.com/es-419/view/bites-the-dust-killa-queen-jojos-bizarre-adventures-jjba-anime-gif-17748630",
-"https://tenor.com/es-419/view/jojo's-bizarre-adventure-killer-queen-yoshikage-kira-kira-yoshikage-jojo-gif-96687283340349969"
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/tenor.gif",
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/jojo's-bizarre-adventure-killer-queen.gif",
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/bites-the-dust-killa-queen.gif",
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/part-4-josuke.gif",
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/jojo-killer-queen.gif",
+"https://file.garden/Y_GG8x4lvlrDqOYg/Mudae%20Bot/Gifs/Requiem/endurable-mudae.gif"
 ];
 
 // ================= UTILIDADES =================
@@ -252,12 +272,23 @@ function sleep(ms) {
   return new Promise(r => setTimeout(r, ms));
 }
 
-async function enviarConReintento(channel, contenido) {
+async function enviarConReintento(channel, mensaje, gif) {
   for (let i = 1; i <= 3; i++) {
     try {
       console.log(`Intento ${i} de envío`);
 
-      await channel.send(contenido);
+       await channel.send({
+        content: mensaje,
+        embeds: 
+        [
+          {
+            image: 
+            {
+              url: gif
+            }
+          }
+        ]
+      });
 
       console.log("Mensaje enviado correctamente");
       return true;
@@ -312,10 +343,7 @@ async function ejecutarLogica() {
     gif = gifs[Math.floor(Math.random() * gifs.length)];
   }
 
-  await enviarConReintento(
-    channel,
-    `<@&${ROLE_ID}> ${mensaje}\n${gif}`
-  );
+  await enviarConReintento(channel,`<@&${ROLE_ID}> ${mensaje}`,gif);
 }
 
 async function ejecutarAlertaRequiem() {
@@ -347,10 +375,7 @@ async function ejecutarAlertaRequiem() {
   const mensaje = mensajesRequiem[Math.floor(Math.random()*mensajesRequiem.length)];
   const gif = gifsRequiem[Math.floor(Math.random()*gifsRequiem.length)];
   
-  await enviarConReintento(
-  channel,
-  `<@&${ROLE_ID}> ${mensaje} \n${gif}`
-  );
+  await enviarConReintento(channel,`<@&${ROLE_ID}> ${mensaje}`,gif);
 }
 
 // ================= SCHEDULER =================
