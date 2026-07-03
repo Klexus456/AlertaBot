@@ -276,12 +276,18 @@ async function enviarConReintento(channel, mensaje, gif) {
   for (let i = 1; i <= 3; i++) {
     try {
       console.log(`Intento ${i} de envío`);
+      console.log("GIF:", gif);
+      console.log("Antes de channel.send()");
 
+      const inicio = Date.now();
+      
        await channel.send({
         content: mensaje,
         files: [gif]
       });
 
+      console.log(`Después de channel.send() (${Date.now() - inicio} ms)`);
+      
       console.log("Mensaje enviado correctamente");
       return true;
 
