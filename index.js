@@ -469,9 +469,14 @@ if (!process.env.GITHUB_TOKEN) {
   process.exit(1);
 }
 
-client.login(process.env.TOKEN).catch(err => {
-  console.error("Error al loguear:", err);
-});
+console.log("Iniciando login...");
+
+client.login(process.env.TOKEN).then(() => {
+    console.log("Login iniciado");
+  })
+  .catch(err => {
+    console.error("Error al loguear:", err);
+  });
 
 // evitar crashes silenciosos
 process.on("uncaughtException", console.error);
