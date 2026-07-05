@@ -201,7 +201,8 @@ async function cargarRequiem() {
   }
 }
 
-async function guardarRequiem(fecha) {
+async function guardarRequiem(fecha) 
+{
   try {
     const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE}`;
 
@@ -268,8 +269,19 @@ async function guardarRequiem(fecha) {
   }
 }
 
-function sleep(ms) {
+function sleep(ms) 
+{
   return new Promise(r => setTimeout(r, ms));
+}
+
+function enviarConTimeout(promesa, ms) 
+{
+  return Promise.race([
+    promesa,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`Timeout de ${ms} ms`)), ms)
+    )
+  ]);
 }
 
 async function enviarConReintento(channel, mensaje, gif) {
@@ -277,14 +289,19 @@ async function enviarConReintento(channel, mensaje, gif) {
     try {
       console.log(`Intento ${i} de envío`);
       console.log("GIF:", gif);
+
+      // Medir descarga del GIF
+      const t1 = Date.now();
+      const res = await fetch(gif);
+      console.log(`Descarga GIF: ${Date.now() - t1} ms`);
+      const buffer = Buffer.from(await res.arrayBuffer());
+      console.log(`GIF descargado (${buffer.length} bytes)`);
+      
       console.log("Antes de channel.send()");
 
       const inicio = Date.now();
       
-       await channel.send({
-        content: mensaje,
-        files: [gif]
-      });
+      await enviarConTimeout(channel.send({content: mensaje, files: [gif]}), 15000);
 
       console.log(`Después de channel.send() (${Date.now() - inicio} ms)`);
       
