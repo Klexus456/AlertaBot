@@ -165,6 +165,7 @@ const OWNER = "Klexus456";
 const REPO = "AlertaBot";
 const FILE = "requiem.json";
 const BRANCH = "main";
+const RECORDATORIOS_FILE = "recordatorios.json";
 
 async function cargarRequiem() {
   try {
@@ -266,6 +267,262 @@ async function guardarRequiem(fecha)
 
   } catch (err) {
     console.error("Error guardando:", err);
+  }
+}
+
+// ================= RECORDATORIOS =================
+
+async function cargarRecordatorios() {
+  try {
+    const url =
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${RECORDATORIOS_FILE}`;
+
+    const res = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+      }
+    });
+
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+
+    const data = await res.json();
+
+    return JSON.parse(
+      Buffer
+        .from(data.content, "base64")
+        .toString("utf8")
+    );
+
+  } catch (err) {
+    console.error("Error leyendo recordatorios:", err);
+    return [];
+  }
+}
+
+
+async function guardarRecordatorios(recordatorios, mensajeCommit) {
+  try {
+    const url =
+      `https://api.github.com/repos/${OWNER}/${REPO}/contents/${RECORDATORIOS_FILE}`;
+
+    const actual = await fetch(url, {
+      headers: {
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+      }
+    });
+
+    if (!actual.ok) {
+      const error = await actual.text();
+      throw new Error(`Error leyendo archivo: ${error}`);
+    }
+
+    const archivo = await actual.json();
+
+    const contenido =
+      Buffer
+        .from(
+          JSON.stringify(recordatorios, null, 2)
+        )
+        .toString("base64");
+
+    const respuesta = await fetch(url, {
+      method: "PUT",
+
+      headers: {
+        Authorization:
+          `Bearer ${process.env.GITHUB_TOKEN}`,
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+        message: mensajeCommit,
+        content: contenido,
+        sha: archivo.sha,
+        branch: BRANCH
+      })
+    });
+
+    if (!respuesta.ok) {
+      const error = await respuesta.text();
+      throw new Error(error);
+    }
+
+    console.log("Recordatorios guardados en GitHub");
+
+  } catch (err) {
+    console.error("Error guardando recordatorios:", err);
+  }
+}
+
+function convertirTiempo(texto) {
+  const match = texto.match(/^(\d+)(m|h)$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const cantidad = parseInt(match[1]);
+  const unidad = match[2].toLowerCase();
+
+  if (cantidad <= 0) {
+    return null;
+  }
+
+  if (unidad === "m") {
+    return cantidad * 60 * 1000;
+  }
+
+  if (unidad === "h") {
+    return cantidad * 60 * 60 * 1000;
+  }
+
+  return null;
+}
+
+function convertirFecha(texto, ahora) {
+  const match = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+
+  if (!match) {
+    return null;
+  }
+
+  const dia = parseInt(match[1]);
+  const mes = parseInt(match[2]);
+  const año = parseInt(match[3]);
+
+  // Usamos la hora y minuto actuales
+  const fecha = new Date(
+    año,
+    mes - 1,
+    dia,
+    ahora.getHours(),
+    ahora.getMinutes(),
+    0,
+    0
+  );
+
+  // Verificar que la fecha realmente exista
+  if (
+    fecha.getFullYear() !== año ||
+    fecha.getMonth() !== mes - 1 ||
+    fecha.getDate() !== dia
+  ) {
+    return null;
+  }
+
+  return fecha;
+}
+
+async function crearRecordatorio(
+  channelId,
+  userId,
+  fecha,
+  mensaje,
+  gif
+) {
+  const recordatorios = await cargarRecordatorios();
+
+  const nuevoRecordatorio = {
+    id: Date.now().toString(),
+    channelId: channelId,
+    userId: userId,
+    fecha: fecha.toISOString(),
+    mensaje: mensaje,
+    gif: gif || null,
+    enviado: false
+  };
+
+  recordatorios.push(nuevoRecordatorio);
+
+  await guardarRecordatorios(
+    recordatorios,
+    "Agregar recordatorio"
+  );
+
+  return nuevoRecordatorio;
+}
+
+async function ejecutarRecordatorios() {
+  if (!client.isReady()) {
+    return;
+  }
+
+  const recordatorios = await cargarRecordatorios();
+
+  if (recordatorios.length === 0) {
+    return;
+  }
+
+  const ahora = new Date();
+
+  let huboCambios = false;
+
+  for (const recordatorio of recordatorios) {
+
+    if (recordatorio.enviado) {
+      continue;
+    }
+
+    const fechaRecordatorio = new Date(recordatorio.fecha);
+
+    if (fechaRecordatorio > ahora) {
+      continue;
+    }
+
+    try {
+      const channel =
+        await client.channels.fetch(recordatorio.channelId);
+
+      if (!channel) {
+        console.log(
+          `No se encontró el canal del recordatorio ${recordatorio.id}`
+        );
+
+        recordatorio.enviado = true;
+        huboCambios = true;
+        continue;
+      }
+
+      let contenido =
+        `🔔 **Recordatorio**\n${recordatorio.mensaje}`;
+
+      if (recordatorio.userId) {
+        contenido += `\n<@${recordatorio.userId}>`;
+      }
+
+      if (recordatorio.gif) {
+        await channel.send({
+          content: contenido,
+          files: [recordatorio.gif]
+        });
+      } else {
+        await channel.send({
+          content: contenido
+        });
+      }
+
+      console.log(
+        `Recordatorio ${recordatorio.id} enviado correctamente`
+      );
+
+      recordatorio.enviado = true;
+      huboCambios = true;
+
+    } catch (err) {
+      console.error(
+        `Error enviando recordatorio ${recordatorio.id}:`,
+        err.message
+      );
+    }
+  }
+
+  if (huboCambios) {
+    await guardarRecordatorios(
+      recordatorios,
+      "Actualizar recordatorios"
+    );
   }
 }
 
@@ -399,6 +656,7 @@ function iniciarScheduler() {
   function loop() {
     ejecutarLogica();
     ejecutarAlertaRequiem();
+    ejecutarRecordatorios();
 
     const now = new Date();
     const msHastaProximoMinuto =
@@ -456,6 +714,149 @@ client.on("messageCreate", async message =>
     console.log("Requiem registrado");
   }
 
+    // ==== AYUDA DE RECORDATORIOS ====
+
+  if (texto === "!alerta") 
+  {
+    const ayuda =
+`📌 **Sintaxis de recordatorios**
+
+\`!recordatorio <tiempo> <mensaje>\`
+\`!recordatorio <fecha> <mensaje>\`
+
+**Ejemplos:**
+
+\`!recordatorio 30m Recordar tirar wishes\`
+\`!recordatorio 2h Hacer algo\`
+\`!recordatorio 11/12/2026 Recordar hacer algo\`
+
+**Con GIF:**
+
+\`!recordatorio 11/12/2026 Recordar hacer algo <https://ejemplo.com/gif.gif>\`
+
+**Tiempos disponibles:**
+\`m\` = minutos
+\`h\` = horas
+
+Las fechas usan el formato:
+\`DD/MM/YYYY\`
+
+Al utilizar una fecha, el recordatorio se enviará a la **misma hora y minuto en que fue creado**.`;
+
+    await message.reply(ayuda);
+    return;
+  }
+
+
+  // ==== COMANDO RECORDATORIO ====
+
+  if (texto.startsWith("!recordatorio")) 
+  {
+    const partes = message.content.trim().split(/\s+/);
+
+    if (partes.length < 3) 
+    {
+      return message.reply(
+        "Sintaxis incorrecta. Usá `!alerta` para ver cómo funciona."
+      );
+    }
+
+    const tiempoOFecha = partes[1];
+
+    const ahora = new Date();
+
+    let fechaRecordatorio = null;
+
+    // Intentar interpretar como tiempo
+    const tiempo = convertirTiempo(tiempoOFecha);
+
+    if (tiempo !== null) 
+    {
+      fechaRecordatorio = new Date(
+        ahora.getTime() + tiempo
+      );
+    }
+    else 
+    {
+      // Intentar interpretar como fecha
+      fechaRecordatorio =
+        convertirFecha(tiempoOFecha, ahora);
+    }
+
+    if (!fechaRecordatorio) 
+    {
+      return message.reply(
+        "Tiempo o fecha inválida. Usá `!alerta` para ver la sintaxis."
+      );
+    }
+
+    if (fechaRecordatorio <= ahora) 
+    {
+      return message.reply(
+        "El recordatorio debe ser para una fecha futura."
+      );
+    }
+
+    let gif = null;
+    let mensajePartes = partes.slice(2);
+
+    // Detectar GIF al final entre < >
+    const ultimoElemento = mensajePartes[ mensajePartes.length - 1 ];
+
+    if (
+      ultimoElemento.startsWith("<") &&
+      ultimoElemento.endsWith(">")
+    ) 
+    {
+      const posibleGif =
+        ultimoElemento.slice(1, -1);
+
+      if (
+        posibleGif.startsWith("http://") ||
+        posibleGif.startsWith("https://")
+      ) 
+      {
+        gif = posibleGif;
+        mensajePartes.pop();
+      }
+    }
+
+    const mensaje = mensajePartes.join(" ").trim();
+
+    if (!mensaje) 
+    {
+      return message.reply(
+        "Tenés que escribir un mensaje para el recordatorio."
+      );
+    }
+
+    const recordatorio =
+      await crearRecordatorio(
+        message.channel.id,
+        message.author.id,
+        fechaRecordatorio,
+        mensaje,
+        gif
+      );
+
+    const fechaTexto =
+      fechaRecordatorio.toLocaleString("es-AR", {
+        dateStyle: "short",
+        timeStyle: "short"
+      });
+
+    await message.reply(
+      `Recordatorio creado para **${fechaTexto}**.`
+    );
+
+    console.log(
+      `Recordatorio creado: ${recordatorio.id} | ` +
+      `${fechaTexto} | Canal: ${message.channel.id}`
+    );
+
+    return;
+  }
+  
   // ==== COMANDO WISHES ====
   if (texto === "!wishes") 
   {
